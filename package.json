@@ -1,0 +1,13 @@
+{
+  "name": "node-gracchi-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/itxtoledo/node-gracchi-api.git",
+  "author": "Gustavo <gugurock50@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@hapi/joi": "^17.1.0",
+    "axios": "^0.19.2",
+    "esm": "^3.2.25"
+  }
+}
