@@ -12,7 +12,7 @@ export const constructorSchema = joi.object({
     .required()
 });
 
-export const orderSchema = joi.object({
+export const placeOrderSchema = joi.object({
   pair: joi
     .string()
     .uppercase()
