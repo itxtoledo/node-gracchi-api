@@ -51,7 +51,6 @@ declare namespace Gracchi {
 
   interface constructorOptions {
     key: String<256>;
-    secret: String<256>;
   }
 
   interface tradesOptions {
@@ -83,20 +82,10 @@ declare namespace Gracchi {
     date: NumberAsString;
     amount: String;
     total: String;
-    op: op;
+    side: OrderSide;
   }
 
   interface KlineResult {
     timeframe: KlineInterval;
-  }
-
-  interface confirmOfferResult {
-    confirmedAt: Date;
-    baseAmount: NumberAsString;
-    quoteAmount: NumberAsString;
-    efPrice: NumberAsString;
-    offerId: String;
-    orderPrice: NumberAsString;
-    op: op;
   }
 }

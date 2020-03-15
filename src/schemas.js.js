@@ -5,10 +5,6 @@ const AMOUNT_REGEX = /^\d+(\.\d+)?$/;
 export const constructorSchema = joi.object({
   key: Joi.string()
     .max(256)
-    .required(),
-
-  secret: Joi.string()
-    .max(256)
     .required()
 });
 
