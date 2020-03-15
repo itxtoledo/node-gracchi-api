@@ -37,3 +37,35 @@ export const getOrderSchema = joi.object({
 export const cancelOrderSchema = joi.object({
   orderId: joi.string().required()
 });
+
+export const orderbookSchema = joi.object({
+  pair: joi
+    .string()
+    .uppercase()
+    .required()
+});
+
+export const tradesSchema = joi.object({
+  pair: joi
+    .string()
+    .uppercase()
+    .required()
+});
+
+export const tickerSchema = joi.object({
+  pair: joi
+    .string()
+    .uppercase()
+    .required()
+});
+
+export const klineSchema = joi.object({
+  pair: joi
+    .string()
+    .uppercase()
+    .required(),
+  timeframe: joi
+    .string()
+    .uppercase()
+    .required()
+});

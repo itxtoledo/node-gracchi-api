@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as Schemas from "./schemas.js";
 
-const SERVER_ADDRESS = "localhost";
+const SERVER_ADDRESS = "localhost:3000/api";
 
 export default class Gracchi {
   async constructor(config) {
@@ -9,49 +9,102 @@ export default class Gracchi {
     this.key = args.key;
   }
 
+  async trades(params) {
+    params = await Schemas.tradesSchema.validateAsync(params);
+    return this._call(
+      "/v1/trades",
+      "GET",
+      {
+        pair: params.pair
+      },
+      false
+    );
+  }
+
+  async orderbook(params) {
+    params = await Schemas.orderbookSchema.validateAsync(params);
+    return this._call(
+      "/v1/orderbook",
+      "GET",
+      {
+        pair: params.pair
+      },
+      false
+    );
+  }
+
+  async kline(params) {
+    params = await Schemas.klineSchema.validateAsync(params);
+    return this._call(
+      "/v1/kline",
+      "GET",
+      {
+        pair: params.pair,
+        timeframe: params.timeframe
+      },
+      false
+    );
+  }
+
+  async ticker(params) {
+    params = await Schemas.tickerSchema.validateAsync(params);
+    return this._call(
+      "/v1/ticker",
+      "GET",
+      {
+        pair: params.pair
+      },
+      false
+    );
+  }
+
   // async myTrades(params) {
   //   params = await Schemas.myTradesSchema.validateAsync(params);
-  //   return this._call("/api/v1/myTrades", "GET", {}, true);
-  // }
-
-  // async trades(params) {
-  //   params = await Schemas.tradesSchema.validateAsync(params);
-  //   return this._call("/api/v1/trades", "GET", {}, false);
-  // }
-
-  // async ticker(params) {
-  //   params = await Schemas.tickerSchema.validateAsync(params);
-  //   return this._call("/api/v1/ticker", "GET", {}, false);
-  // }
-
-  // async kline(params) {
-  //   params = await Schemas.klineSchema.validateAsync(params);
-  //   return this._call("/api/v1/kline", "GET", {}, false);
-  // }
-
-  // async orderbook(params) {
-  //   params = await Schemas.orderbookSchema.validateAsync(params);
-  //   return this._call("/api/v1/orderbook", "GET", {}, false);
+  //   return this._call("/v1/myTrades", "GET", {}, true);
   // }
 
   async cancelOrder(params) {
     params = await Schemas.cancelOrderSchema.validateAsync(params);
-    return this._call("/api/v1/cancelOrder", "POST", {}, true);
+    return this._call(
+      "/v1/cancelOrder",
+      "POST",
+      {
+        orderId: params.orderId
+      },
+      true
+    );
   }
 
   async getOrder(params) {
     params = await Schemas.getOrderSchema.validateAsync(params);
-    return this._call("/api/v1/getOrder", "GET", {}, false);
+    return this._call(
+      "/v1/getOrder",
+      "GET",
+      {
+        orderId: params.orderId
+      },
+      true
+    );
   }
 
   async placeOrder(params) {
     params = await Schemas.placeOrderSchema.validateAsync(params);
-    return this._call("/api/v1/placeOrder", "POST", {}, true);
+    return this._call(
+      "/v1/placeOrder",
+      "POST",
+      {
+        pair: params.pair,
+        side: params.side,
+        price: params.price,
+        amount: params.amount
+      },
+      true
+    );
   }
 
-  // async balance() {
-  //   return this._call("/api/v1/balance", "POST", {}, true);
-  // }
+  async balance() {
+    return this._call("/v1/balance", "GET", {}, true);
+  }
 
   async _call(endpoint, method, params = {}, auth = false) {
     try {
