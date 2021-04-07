@@ -1,5 +1,4 @@
 import axios, { AxiosRequestConfig } from "axios";
-import * as Schemas from "./schemas.js";
 
 export default class Gracchi {
   key: string;
@@ -10,17 +9,17 @@ export default class Gracchi {
     this.url = url;
   }
 
-  async trades({ base, quote }: { base: string; quote: string }) {
-    return this._call(
-      "/v1/trades",
-      "GET",
-      {
-        base,
-        quote,
-      },
-      false
-    );
-  }
+  // async trades({ base, quote }: { base: string; quote: string }) {
+  //   return this._call(
+  //     "/v1/trades",
+  //     "GET",
+  //     {
+  //       base,
+  //       quote,
+  //     },
+  //     false
+  //   );
+  // }
 
   async orderbook({ base, quote }: { base: string; quote: string }) {
     return this._call(
@@ -34,29 +33,8 @@ export default class Gracchi {
     );
   }
 
-  async kline(params) {
-    params = await Schemas.klineSchema.validateAsync(params);
-    return this._call(
-      "/v1/kline",
-      "GET",
-      {
-        pair: params.pair,
-        timeframe: params.timeframe,
-      },
-      false
-    );
-  }
-
-  async ticker(params) {
-    params = await Schemas.tickerSchema.validateAsync(params);
-    return this._call(
-      "/v1/ticker",
-      "GET",
-      {
-        pair: params.pair,
-      },
-      false
-    );
+  async ticker({ base, quote }: { base: string; quote: string }) {
+    return this._call("/v1/ticker", "GET", { base, quote }, false);
   }
 
   // async myTrades(params) {
