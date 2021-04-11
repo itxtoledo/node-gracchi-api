@@ -1,6 +1,6 @@
 {
   "name": "node-gracchi-api",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -11,9 +11,9 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "prepack": "tsc",
+    "prepack": "mocha",
     "test": "mocha",
-    "prepublish": "mocha"
+    "prepublish": "tsc"
   },
   "dependencies": {
     "axios": "^0.19.2",
