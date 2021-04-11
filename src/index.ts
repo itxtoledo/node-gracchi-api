@@ -11,7 +11,7 @@ export default class Gracchi {
 
   // async trades({ base, quote }: { base: string; quote: string }) {
   //   return this._call(
-  //     "/v1/trades",
+  //     "/v1/trade/trades",
   //     "GET",
   //     {
   //       base,
@@ -22,19 +22,22 @@ export default class Gracchi {
   // }
 
   async orderbook({ base, quote }: { base: string; quote: string }) {
-    return this._call(
-      "/v1/orderbook",
-      "GET",
-      {
+    return this._call({
+      endpoint: "/v1/trade/orderbook",
+      method: "GET",
+      params: {
         base,
         quote,
       },
-      false
-    );
+    });
   }
 
   async ticker({ base, quote }: { base: string; quote: string }) {
-    return this._call("/v1/ticker", "GET", { base, quote }, false);
+    return this._call({
+      endpoint: "/v1/trade/ticker",
+      method: "GET",
+      params: { base, quote },
+    });
   }
 
   // async myTrades(params) {
@@ -43,38 +46,67 @@ export default class Gracchi {
   // }
 
   async cancelOrder({ orderId }) {
-    return this._call(`/v1/trade/orders/${orderId}`, "DELETE", null, true);
+    return this._call({
+      endpoint: `/v1/trade/orders/${orderId}`,
+      method: "DELETE",
+      auth: true,
+    });
   }
 
   async getOrder({ orderId }) {
-    return this._call(`/v1/trade/orders/${orderId}`, "GET", null, true);
+    return this._call({
+      endpoint: `/v1/trade/orders/${orderId}`,
+      method: "GET",
+      auth: true,
+    });
   }
 
-  async placeOrder({ base, quote, price, amount, side }) {
-    return this._call(
-      "/v1/trade/orders",
-      "POST",
-      {
+  async placeOrder({
+    base,
+    quote,
+    price,
+    amount,
+    side,
+  }: {
+    base: string;
+    quote: string;
+    price: number;
+    amount: number;
+    side: "ask" | "bid";
+  }) {
+    return this._call({
+      endpoint: "/v1/trade/orders",
+      method: "POST",
+      params: {
         base,
         quote,
         price,
         amount,
         side,
       },
-      true
-    );
+      auth: true,
+    });
   }
 
   async balance() {
-    return this._call("/v1/account/balances", "GET", null, true);
+    return this._call({
+      endpoint: "/v1/account/balances",
+      method: "GET",
+      auth: true,
+    });
   }
 
-  async _call(
-    endpoint: string,
-    method: AxiosRequestConfig["method"],
-    params = {},
-    auth = false
-  ) {
+  async _call({
+    endpoint,
+    method,
+    params,
+    auth,
+  }: {
+    endpoint: string;
+    method: AxiosRequestConfig["method"];
+    params?: object;
+    auth?: boolean;
+  }) {
     try {
       const config: AxiosRequestConfig = {
         method: method,
@@ -89,11 +121,11 @@ export default class Gracchi {
 
       if (auth) {
         config.headers = {};
-        config.headers.authentication = this.key;
+        config.headers.authorization = this.key;
       }
 
       const { data } = await axios(config);
-      return data.response;
+      return data;
     } catch (error) {
       throw error?.response?.data?.message || error?.response?.data || error;
     }
