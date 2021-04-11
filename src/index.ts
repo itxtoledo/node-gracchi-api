@@ -88,6 +88,7 @@ export default class Gracchi {
       }
 
       if (auth) {
+        config.headers = {};
         config.headers.authentication = this.key;
       }
 
